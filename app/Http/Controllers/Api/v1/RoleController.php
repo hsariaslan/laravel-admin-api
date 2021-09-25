@@ -20,25 +20,29 @@ class RoleController extends Controller
 
     public function create (Request $request) {
         $role = Role::create([
-            'name'  => $request->name,
-            'slug'  => slugify($request->name),
-            'color' => $request->color,
-            'guard' => 'web',
+            'name'          => slugify($request->name),
+            'display_name'  => $request->display_name,
+            'color'         => $request->color,
+            'guard'         => 'web',
         ]);
+        $role->givePermissionTo($request->permissions);
         return new RoleResource(Role::findOrFail($role->id));
     }
 
     public function update (Request $request, $id) {
         $role = Role::where('id', $id)->first();
-        $role->name  = $request->name;
-        $role->slug  = slugify($request->name);
-        $role->color = $request->color;
+        $role->name         = slugify($request->name);
+        $role->display_name = $request->display_name;
+        $role->color        = $request->color;
         $role->save();
+        $role->syncPermissions($request->permissions);
         return new RoleResource(Role::findOrFail($role->id));
     }
 
     public function delete ($id) {
-        Role::where('id', $id)->delete();
+        $role = Role::where('id', $id)->first();
+        $role->syncPermissions();
+        $role->delete();
         return true;
     }
 }

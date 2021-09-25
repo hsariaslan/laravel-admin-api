@@ -23,9 +23,9 @@ class RolePermissionSeeder extends Seeder
         // Admin role
         // AuthServiceProvider içindeki Gate::before rule; kodu ile tüm permissionlara otomatik erişim sağlar.
         $role1 = Role::create([
-            'name'  => 'Admin',
-            'slug'  => 'admin',
-            'color' => 'EF4444', // tw-red-500
+            'name'          => 'admin',
+            'display_name'  => 'Admin',
+            'color'         => 'EF4444', // tw-red-500
         ]);
 
         // All permissions
@@ -54,8 +54,8 @@ class RolePermissionSeeder extends Seeder
 
         foreach ($permissions as $permission) {
             Permission::create([
-                'name' => $permission,
-                'slug' => slugify($permission),
+                'name'          => slugify($permission),
+                'display_name'  => $permission,
             ]);
         }
 
@@ -66,9 +66,9 @@ class RolePermissionSeeder extends Seeder
 
         // Editor role
         $role2 = Role::create([
-            'name'  => 'Editor',
-            'slug'  => 'editor',
-            'color' => '10B981', // tw-green-500
+            'name'          => 'editor',
+            'display_name'  => 'Editor',
+            'color'         => '10B981', // tw-green-500
         ]);
 
         // Editor permissions
@@ -86,7 +86,7 @@ class RolePermissionSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            $role2->givePermissionTo($permission);
+            $role2->givePermissionTo(slugify($permission));
         }
 
         $user = User::where('id',2)->first();
@@ -96,9 +96,9 @@ class RolePermissionSeeder extends Seeder
 
         // Member role
         $role3 = Role::create([
-            'name'  => 'Member',
-            'slug'  => 'member',
-            'color' => '3B82F6', // tw-blue-500
+            'name'          => 'member',
+            'display_name'  => 'Member',
+            'color'         => '3B82F6', // tw-blue-500
         ]);
 
         // Member permissions
@@ -109,7 +109,7 @@ class RolePermissionSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            $role3->givePermissionTo($permission);
+            $role3->givePermissionTo(slugify($permission));
         }
 
         $user = User::where('id',3)->first();

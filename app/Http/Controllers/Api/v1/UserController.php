@@ -27,6 +27,8 @@ class UserController extends Controller
             'name'      => $request->name,
             'surname'   => $request->surname,
         ]);
+        $user->assignRole($request->roles);
+        $user->givePermissionTo($request->permissions);
         return new UserResource(User::findOrFail($user->id));
     }
 
@@ -38,11 +40,16 @@ class UserController extends Controller
         $user->name     = $request->name;
         $user->surname  = $request->surname;
         $user->save();
+        $user->syncRoles($request->roles);
+        $user->syncPermissions($request->permissions);
         return new UserResource(User::findOrFail($user->id));
     }
 
     public function delete ($id) {
-        User::where('id', $id)->delete();
+        $user = User::where('id', $id)->first();
+        $user->syncRoles();
+        $user->syncPermissions();
+        $user->delete();
         return true;
     }
 }

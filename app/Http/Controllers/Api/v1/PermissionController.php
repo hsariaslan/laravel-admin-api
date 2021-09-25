@@ -20,17 +20,17 @@ class PermissionController extends Controller
 
     public function create (Request $request) {
         $permission = Permission::create([
-            'name'  => $request->name,
-            'slug'  => slugify($request->name),
-            'guard' => 'web',
+            'name'          => slugify($request->name),
+            'display_name'  => $request->display_name,
+            'guard'         => 'web',
         ]);
         return new PermissionResource(Permission::findOrFail($permission->id));
     }
 
     public function update (Request $request, $id) {
         $permission = Permission::where('id', $id)->first();
-        $permission->name = $request->name;
-        $permission->slug = slugify($request->name);
+        $permission->name         = slugify($request->name);
+        $permission->display_name = $request->display_name;
         $permission->save();
         return new PermissionResource(Permission::findOrFail($permission->id));
     }
