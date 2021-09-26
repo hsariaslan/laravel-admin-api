@@ -21,25 +21,25 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::prefix('users')->group(function () {
-    Route::get('/',         [UserController::class, 'index']);
-    Route::get('/{id}',     [UserController::class, 'read']);
-    Route::post('/create',  [UserController::class, 'create']);
-    Route::patch('/{id}',   [UserController::class, 'update']);
-    Route::delete('/{id}',  [UserController::class, 'delete']);
+    Route::get('/',             [UserController::class, 'index']);
+    Route::get('/{user}',       [UserController::class, 'show']);
+    Route::post('/create',      [UserController::class, 'store']);
+    Route::patch('/{user}',     [UserController::class, 'update']);
+    Route::delete('/{user}',    [UserController::class, 'delete']);
 });
 
 Route::prefix('roles')->group(function () {
-    Route::get('/',         [RoleController::class, 'index']);
-    Route::get('/{id}',     [RoleController::class, 'read']);
-    Route::post('/create',  [RoleController::class, 'create']);
-    Route::patch('/{id}',   [RoleController::class, 'update']);
-    Route::delete('/{id}',  [RoleController::class, 'delete']);
+    Route::get('/',             [RoleController::class, 'index']);
+    Route::get('/{role}',       [RoleController::class, 'show']);
+    Route::post('/create',      [RoleController::class, 'store']);
+    Route::patch('/{role}',     [RoleController::class, 'update']);
+    Route::delete('/{role}',    [RoleController::class, 'delete']);
 });
 
 Route::prefix('permissions')->group(function () {
-    Route::get('/',         [PermissionController::class, 'index']);
-    Route::get('/{id}',     [PermissionController::class, 'read']);
-    Route::post('/create',  [PermissionController::class, 'create']);
-    Route::patch('/{id}',   [PermissionController::class, 'update']);
-    Route::delete('/{id}',  [PermissionController::class, 'delete']);
+    Route::get('/',                 [PermissionController::class, 'index']);
+    Route::get('/{permission}',     [PermissionController::class, 'show']);
+    Route::post('/create',          [PermissionController::class, 'store']);
+    Route::patch('/{permission}',   [PermissionController::class, 'update']);
+    Route::delete('/{permission}',  [PermissionController::class, 'delete']);
 });

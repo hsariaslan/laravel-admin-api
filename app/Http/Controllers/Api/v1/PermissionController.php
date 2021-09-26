@@ -3,40 +3,74 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use App\Http\Resources\PermissionResource;
 use App\Http\Resources\PermissionCollection;
+use App\Http\Requests\StorePermissionRequest;
 
 class PermissionController extends Controller
 {
-    public function index () {
+    /**
+     * Get all permissions.
+     *
+     * @return App\Http\Resources\PermissionCollection
+     */
+    public function index ():PermissionCollection
+    {
         return new PermissionCollection(Permission::all());
     }
 
-    public function read ($id) {
-        return new PermissionResource(Permission::findOrFail($id));
+    /**
+     * Show the permission given by id.
+     *
+     * @param  App\Models\Permission  $permission
+     * @return App\Http\Resources\PermissionResource
+     */
+    public function show (Permission $permission):PermissionResource
+    {
+        return new PermissionResource($permission);
     }
 
-    public function create (Request $request) {
+    /**
+     * Store a new permission.
+     *
+     * @param  App\Http\Requests\StorePermissionRequest  $request
+     * @return App\Http\Resources\PermissionResource
+     */
+    public function store (StorePermissionRequest $request):PermissionResource
+    {
         $permission = Permission::create([
             'name'          => slugify($request->name),
             'display_name'  => $request->display_name,
             'guard'         => 'web',
         ]);
-        return new PermissionResource(Permission::findOrFail($permission->id));
+        return new PermissionResource($permission);
     }
 
-    public function update (Request $request, $id) {
-        $permission = Permission::where('id', $id)->first();
+    /**
+     * Update the permission given by id.
+     *
+     * @param  App\Http\Requests\StorePermissionRequest  $request
+     * @param  App\Models\Permission  $permission
+     * @return App\Http\Resources\PermissionResource
+     */
+    public function update (StorePermissionRequest $request, Permission $permission):PermissionResource
+    {
         $permission->name         = slugify($request->name);
         $permission->display_name = $request->display_name;
         $permission->save();
-        return new PermissionResource(Permission::findOrFail($permission->id));
+        return new PermissionResource($permission);
     }
 
-    public function delete ($id) {
-        Permission::where('id', $id)->delete();
+    /**
+     * Delete the permission given by id.
+     *
+     * @param  App\Models\Permission  $permission
+     * @return bool
+     */
+    public function delete (Permission $permission):bool
+    {
+        $permission->delete();
         return true;
     }
 }

@@ -3,23 +3,43 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserCollection;
+use App\Http\Requests\StoreUserRequest;
 
 class UserController extends Controller
 {
-    public function index () {
+    /**
+     * Get all users.
+     *
+     * @return App\Http\Resources\UserCollection
+     */
+    public function index ():UserCollection
+    {
         return new UserCollection(User::all());
     }
 
-    public function read ($id) {
-        return new UserResource(User::findOrFail($id));
+    /**
+     * Show the user given by id.
+     *
+     * @param  App\Models\User  $user
+     * @return App\Http\Resources\UserResource
+     */
+    public function show (User $user):UserResource
+    {
+        return new UserResource($user);
     }
 
-    public function create (Request $request) {
+    /**
+     * Store a new user.
+     *
+     * @param  App\Http\Requests\StoreUserRequest  $request
+     * @return App\Http\Resources\UserResource
+     */
+    public function store (StoreUserRequest $request):UserResource
+    {
         $user = User::create([
             'username'  => $request->username,
             'email'     => $request->email,
@@ -29,24 +49,37 @@ class UserController extends Controller
         ]);
         $user->assignRole($request->roles);
         $user->givePermissionTo($request->permissions);
-        return new UserResource(User::findOrFail($user->id));
+        return new UserResource($user);
     }
 
-    public function update (Request $request, $id) {
-        $user = User::where('id', $id)->first();
+    /**
+     * Update the user given by id.
+     *
+     * @param  App\Http\Requests\StoreUserRequest  $request
+     * @param  App\Models\User  $user
+     * @return App\Http\Resources\UserResource
+     */
+    public function update (StoreUserRequest $request, User $user):UserResource
+    {
         $user->username = $request->username;
         $user->email    = $request->email;
         $user->password = Hash::make($request->password);
         $user->name     = $request->name;
         $user->surname  = $request->surname;
-        $user->save();
         $user->syncRoles($request->roles);
         $user->syncPermissions($request->permissions);
-        return new UserResource(User::findOrFail($user->id));
+        $user->save();
+        return new UserResource($user);
     }
 
-    public function delete ($id) {
-        $user = User::where('id', $id)->first();
+    /**
+     * Delete the user given by id.
+     *
+     * @param  App\Models\User  $user
+     * @return bool
+     */
+    public function delete (User $user):bool
+    {
         $user->syncRoles();
         $user->syncPermissions();
         $user->delete();
