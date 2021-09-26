@@ -17,7 +17,7 @@ $ php artisan migrate
 # serve at localhost:8000
 $ php artisan serve
 
-# your apis will serve under http://localhost:8000/api/v1
+# your apis will be served under http://localhost:8000/api/v1
 ```
 
 ## License
