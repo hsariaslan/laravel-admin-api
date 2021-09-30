@@ -31,8 +31,8 @@ class StorePermissionRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'          => 'required|min:3|max:50|alpha_dash',
-            'display_name'  => 'required|min:3|max:50|regex:/^[\pL\s]+$/u',
+            'name'          => ['required', 'min:3', 'max:50', 'alpha_dash'],
+            'display_name'  => ['required', 'min:3', 'max:50', 'regex:/^[\pL\s]+$/u'],
         ];
     }
 }

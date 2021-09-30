@@ -33,14 +33,14 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'username'              => ['required',Rule::unique('users')->ignore($this->user),'min:5','max:50'],
-            'email'                 => ['required',Rule::unique('users')->ignore($this->user),'min:6','max:50','email:rfc,dns,spoof'],
-            'password'              => 'required|min:6|max:50|confirmed',
-            'password_confirmation' => 'required|same:password',
-            'name'                  => 'required|min:3|max:50|alpha',
-            'surname'               => 'required|min:3|max:50|alpha',
-            'roles'                 => 'required|array|exists:Spatie\Permission\Models\Role,name',
-            'permissions'           => 'nullable|array|exists:Spatie\Permission\Models\Permission,name',
+            'username'              => ['required', Rule::unique('users')->ignore($this->user), 'min:5', 'max:50'],
+            'email'                 => ['required', Rule::unique('users')->ignore($this->user), 'min:6', 'max:50', 'email:rfc,dns,spoof'],
+            'password'              => ['sometimes', 'required', 'min:6', 'max:50', 'confirmed'],
+            'password_confirmation' => ['sometimes', 'required', 'same:password'],
+            'name'                  => ['required', 'min:3', 'max:50', 'alpha'],
+            'surname'               => ['required', 'min:3', 'max:50', 'alpha'],
+            'roles'                 => ['required', 'array', 'exists:Spatie\Permission\Models\Role,name'],
+            'permissions'           => ['nullable', 'array', 'exists:Spatie\Permission\Models\Permission,name']
         ];
     }
 }

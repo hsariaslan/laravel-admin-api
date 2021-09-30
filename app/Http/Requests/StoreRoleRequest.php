@@ -31,10 +31,10 @@ class StoreRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'          => 'required|min:3|max:50|alpha_dash',
-            'display_name'  => 'required|min:3|max:50|regex:/^[\pL\s]+$/u',
-            'color'         => 'required|size:6|alpha_num',
-            'permissions'   => 'required|array|exists:Spatie\Permission\Models\Permission,name',
+            'name'          => ['required', 'min:3', 'max:50', 'alpha_dash'],
+            'display_name'  => ['required', 'min:3', 'max:50', 'regex:/^[\pL\s]+$/u'],
+            'color'         => ['required', 'size:6', 'alpha_num'],
+            'permissions'   => ['required', 'array', 'exists:Spatie\Permission\Models\Permission,name'],
         ];
     }
 }
