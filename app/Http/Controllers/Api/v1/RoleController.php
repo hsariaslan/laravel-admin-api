@@ -10,33 +10,16 @@ use App\Http\Requests\StoreRoleRequest;
 
 class RoleController extends Controller
 {
-    /**
-     * Get all roles.
-     *
-     * @return App\Http\Resources\RoleCollection
-     */
     public function index ():RoleCollection
     {
         return new RoleCollection(Role::all());
     }
 
-    /**
-     * Show the role given by id.
-     *
-     * @param  App\Models\Role  $role
-     * @return App\Http\Resources\RoleResource
-     */
     public function show (Role $role):RoleResource
     {
         return new RoleResource($role);
     }
 
-    /**
-     * Store a new role.
-     *
-     * @param  App\Http\Requests\StoreRoleRequest  $request
-     * @return App\Http\Resources\RoleResource
-     */
     public function store (StoreRoleRequest $request):RoleResource
     {
         $role = Role::create([
@@ -49,13 +32,6 @@ class RoleController extends Controller
         return new RoleResource($role);
     }
 
-    /**
-     * Update the role given by id.
-     *
-     * @param  App\Http\Requests\StoreRoleRequest  $request
-     * @param  App\Models\Role  $role
-     * @return App\Http\Resources\RoleResource
-     */
     public function update (StoreRoleRequest $request, Role $role):RoleResource
     {
         $role->name         = slugify($request->name);
@@ -66,12 +42,6 @@ class RoleController extends Controller
         return new RoleResource($role);
     }
 
-    /**
-     * Delete the role given by id.
-     *
-     * @param  App\Models\Role  $role
-     * @return bool
-     */
     public function delete (Role $role):bool
     {
         $role->syncPermissions();

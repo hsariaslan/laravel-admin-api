@@ -11,33 +11,16 @@ use App\Http\Requests\StoreUserRequest;
 
 class UserController extends Controller
 {
-    /**
-     * Get all users.
-     *
-     * @return App\Http\Resources\UserCollection
-     */
     public function index ():UserCollection
     {
         return new UserCollection(User::all());
     }
 
-    /**
-     * Show the user given by id.
-     *
-     * @param  App\Models\User  $user
-     * @return App\Http\Resources\UserResource
-     */
     public function show (User $user):UserResource
     {
         return new UserResource($user);
     }
 
-    /**
-     * Store a new user.
-     *
-     * @param  App\Http\Requests\StoreUserRequest  $request
-     * @return App\Http\Resources\UserResource
-     */
     public function store (StoreUserRequest $request):UserResource
     {
         $user = User::create([
@@ -52,13 +35,6 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    /**
-     * Update the user given by id.
-     *
-     * @param  App\Http\Requests\StoreUserRequest  $request
-     * @param  App\Models\User  $user
-     * @return App\Http\Resources\UserResource
-     */
     public function update (StoreUserRequest $request, User $user):UserResource
     {
         $user->username = $request->username;
@@ -72,12 +48,6 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    /**
-     * Delete the user given by id.
-     *
-     * @param  App\Models\User  $user
-     * @return bool
-     */
     public function delete (User $user):bool
     {
         $user->syncRoles();
