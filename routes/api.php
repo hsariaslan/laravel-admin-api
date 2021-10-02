@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\UserController;
 use App\Http\Controllers\Api\v1\RoleController;
 use App\Http\Controllers\Api\v1\PermissionController;
@@ -15,6 +16,11 @@ use App\Http\Controllers\Api\v1\PermissionController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::group(['middleware' => ['web']], function () {
+    Route::post('/login',   [AuthController::class, 'login']);
+    Route::post('/logout',  [AuthController::class, 'logout']);
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     // do some logic...
